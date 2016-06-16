@@ -1,0 +1,34 @@
+nginx:
+  image: dr.ytlabs.co.kr/nginx:1.11.0
+#   command: bash -c "nginx;php-fpm -y /etc/php-fpm.conf"
+#  command: bash -c "while [ 0 ]; do sleep 1;done"
+  volumes:
+    - ./www:/var/www/html
+    - ./logs:/var/log/nginx
+    - /etc/localtime:/etc/localtime:ro
+
+  ports:
+   - "80:80"
+   - "443:443"
+  links:
+   - php:php_container
+
+  environment:
+    USE_DOCKERIZE: "yes"
+    UPSTREAM: "php_container:9000"
+    DOMAIN: "dev.yt.com"
+    LOCATION: 'location ~* \.(?:css|js|ico|woff|eot|svg|ttf|otf|woff2) {
+                 access_log off;
+                 add_header Cache-Control public;
+               }'
+
+php:
+  image: dr.ytlabs.co.kr/php:5.6.22
+#  command: bash -c "while [ 0 ]; do sleep 1;done"
+  volumes:
+   - ./www:/var/www/html
+#  command: /run.sh
+  environment:
+    FPM_USER: "www-data"
+    FPM_GROUP: "www-data"
+    FPM_LISTEN: "0.0.0.0:9000"

@@ -8,8 +8,8 @@ nginx:
     - /etc/localtime:/etc/localtime:ro
 
   ports:
-   - "80:80"
-   - "443:443"
+   - "80"
+   - "443"
   links:
    - php:php_container
 
@@ -17,6 +17,7 @@ nginx:
     USE_DOCKERIZE: "yes"
     UPSTREAM: "php_container:9000"
     DOMAIN: "dev.yt.com"
+    WEBROOT: "/var/www/public/"
     LOCATION: 'location ~* \.(?:css|js|ico|woff|eot|svg|ttf|otf|woff2) {
                  access_log off;
                  add_header Cache-Control public;
@@ -26,7 +27,7 @@ php:
   image: dr.ytlabs.co.kr/php:5.6.22
 #  command: bash -c "while [ 0 ]; do sleep 1;done"
   volumes:
-   - ./www:/var/www/html
+   - ./www:/var/www/
 #  command: /run.sh
   environment:
     FPM_USER: "www-data"

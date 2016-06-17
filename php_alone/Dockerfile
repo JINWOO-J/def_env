@@ -11,7 +11,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 ARG PHP_VERSION
 ENV PHP_VERSION $PHP_VERSION
-RUN echo "php version = ${PHP_VERSION}"
+RUN echo "PHP version = ${PHP_VERSION}"
 
 ENV PHP_VERSION 5.6.22
 ENV DOCKERIZE_VERSION v0.2.0
@@ -105,11 +105,11 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys $PHP5_KEY \
 
 RUN userdel www-data && groupadd -r www-data -g 433 && \
     mkdir /home/www-data && \
-    mkdir -p /var/www/html && \
+    mkdir -p /var/www && \
     useradd -u 431 -r -g www-data -d /home/www-data -s /sbin/nologin -c "Docker image user for web application" www-data && \
-    chown -R www-data:www-data /home/www-data /var/www/html && \
+    chown -R www-data:www-data /home/www-data /var/www && \
     chmod 700 /home/www-data && \
-    chmod 711 /var/www/html
+    chmod 711 /var/www
 
 
 COPY files /
@@ -152,7 +152,7 @@ RUN bash -c "/usr/local/bin/docker-pecl-install ${PHP_LIB}" && rm -rf /usr/src/p
 # Docker properties
 #
 
-VOLUME ["/var/www/html", "/etc/nginx"]
+VOLUME ["/var/www", "/etc/php"]
 
 EXPOSE 9000
 

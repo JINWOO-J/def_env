@@ -14,11 +14,11 @@ server {
 
     server_name {{ .Env.DOMAIN }};
 
-    access_log  /var/log/nginx/$host-access.log;
-    error_log   /var/log/nginx/$host-error.log error;
+    access_log  /var/log/nginx/{{.Env.DOMAIN}}-access.log;
+    error_log   /var/log/nginx/{{.Env.DOMAIN}}-error.log error;
 
 
-    root /var/www/html;
+    root {{ .Env.WEBROOT }};
 
     index index.html index.php index.htm;
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -37,16 +37,6 @@ server {
         try_files   $uri =404;
         fastcgi_pass _php;
     }
-
-#     location ~* \.(?:css|js|ico|woff|eot|svg|ttf|otf|woff2) {
-#         access_log off;
-#         add_header Cache-Control public;
-#         expires 1w;
-#     }
-#
-#     location ~* \.(?:eot|ttf|svg)$ {
-#         add_header Vary Accept-Encoding;
-#     }
 
     location ~ /\.ht {
         deny all;

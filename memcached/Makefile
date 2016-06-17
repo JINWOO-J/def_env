@@ -20,3 +20,6 @@ bash:
 tag_latest:
 	docker tag -f $(REPO)/$(NAME):$(VERSION) $(REPO)/$(NAME):latest
 	docker push $(REPO)/$(NAME):latest
+
+test:
+	docker run --rm -it $(NAME):$(VERSION)

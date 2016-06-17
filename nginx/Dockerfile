@@ -68,11 +68,11 @@ RUN apt-get update \
 
 RUN userdel www-data && groupadd -r www-data -g 433 && \
 	mkdir /home/www-data && \
-	mkdir -p /var/www/html && \
+	mkdir -p /var/www && \
 	useradd -u 431 -r -g www-data -d /home/www-data -s /sbin/nologin -c "Docker image user for web application" www-data && \
-	chown -R www-data:www-data /home/www-data /var/www/html && \
+	chown -R www-data:www-data /home/www-data /var/www && \
 	chmod 700 /home/www-data && \
-	chmod 711 /var/www/html && \
+	chmod 711 /var/www && \
     mkdir -p /etc/nginx/conf.d/
 
 COPY files /
@@ -81,7 +81,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm -f /dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-VOLUME ["/var/www/html", "/etc/nginx"]
+VOLUME ["/var/www", "/etc/nginx"]
 
 EXPOSE 80
 EXPOSE 443
